@@ -1,0 +1,183 @@
+---
+title: "EjerciciosResueltos"
+author: "Alfonso Lopez Santiago"
+date: '2024-10-18'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 4. Alfonso López Santiago
+### Ejercicio 4.1
+Resuelve el siguiente ejercicio de teoría de la decisión bajo incertidumbre tanto para el caso favorable (beneficios) como para el desfavorable(costos).
+
+```{r}
+source("teoriadecision_funciones_incertidumbre.R")
+
+# Definición de las estrategias (ingresos en cientos de euros)
+e1 = c(55, 30, 25, 45)  # Estrategia 1
+e2 = c(60, 25, 35, 40)  # Estrategia 2
+e3 = c(55, 40, 25, 45)  # Estrategia 3
+
+
+datos = crea.tablaX(c(e1, e2, e3), 4, 3)
+print(datos)
+
+```
+
+### CASO FAVORABLE
+**1. Criterio de Wald**
+
+```{r}
+p1_pes_FAV = criterio.Wald(datos,T)
+names(p1_pes_FAV$AlternativaOptima)
+```
+
+**2. Criterio optimista**
+
+```{r}
+p1_opt_FAV = criterio.Optimista(datos,T)
+names(p1_opt_FAV$AlternativaOptima)
+```
+
+**3. Criterio de Hurwitcz**
+
+```{r}
+p1_hur_FAV = criterio.Hurwicz(datos,T)
+names(p1_hur_FAV$AlternativaOptima)
+```
+
+**4. Criterio de Savage**
+
+```{r}
+p1_sav_FAV = criterio.Savage(datos,T)
+names(p1_sav_FAV$AlternativaOptima)
+```
+
+**5. Criterio de Laplace**
+
+```{r}
+p1_lap_FAV = criterio.Laplace(datos,T)
+names(p1_lap_FAV$AlternativaOptima)
+```
+
+**6. Criterio del punto ideal**
+
+```{r}
+p1_pid_FAV = criterio.PuntoIdeal(datos,T)
+names(p1_pid_FAV$AlternativaOptima)
+```
+
+###### CONCLUSIÓN
+```{r}
+criterio_todo=criterio.Todos(datos)
+library(kableExtra)
+kable(criterio_todo)
+```
+
+### CASO DESFAVORABLE
+**1. Criterio de Wald**
+
+```{r}
+p1_pes_DESFAV = criterio.Wald(datos,F)
+names(p1_pes_DESFAV$AlternativaOptima)
+```
+
+**2. Criterio optimista**
+
+```{r}
+p1_opt_DESFAV = criterio.Optimista(datos,F)
+names(p1_opt_DESFAV$AlternativaOptima)
+```
+
+**3. Criterio de Hurwitcz**
+
+```{r}
+p1_hur_DESFAV = criterio.Hurwicz(datos,F)
+names(p1_hur_DESFAV$AlternativaOptima)
+```
+
+**4. Criterio de Savage**
+
+```{r}
+p1_sav_DESFAV = criterio.Savage(datos,F)
+names(p1_sav_DESFAV$AlternativaOptima)
+```
+
+**5. Criterio de Laplace**
+
+```{r}
+p1_lap_DESFAV = criterio.Laplace(datos,F)
+names(p1_lap_DESFAV$AlternativaOptima)
+```
+
+**6. Criterio del punto ideal**
+
+```{r}
+p1_pid_DESFAV = criterio.PuntoIdeal(datos,F)
+names(p1_pid_DESFAV$AlternativaOptima)
+```
+
+### Ejercicio 4.2
+Un equipo de fútbol está en los últimos 10 minutos de un partido muy cerrado y debe elegir una estrategia para atacar. El entrenador tiene tres alternativas tácticas, cada una con diferentes probabilidades de éxito dependiendo de lo que el equipo rival haga en esos momentos decisivos.
+
+- Estrategias disponibles:
+Atacar por las bandas
+Atacar por el centro
+Jugar balones largos (pases directos a los delanteros)
+- Escenarios posibles:
+Escenario 1: El equipo rival se queda con un jugador menos (expulsión)
+Escenario 2: El equipo rival juega a la defensiva y cierra los espacios
+Escenario 3: El equipo rival está buscando atacar y deja huecos en su defensa
+Escenario 4: El equipo rival presiona en todo el campo (presión alta)
+
+Probabilidades de éxito para cada estrategia en cada escenario:
+- Atacar por las bandas:
+
+Escenario 1: 85%
+Escenario 2: 40%
+Escenario 3: 80%
+Escenario 4: 50%
+- Atacar por el centro:
+
+Escenario 1: 50%
+Escenario 2: 30%
+Escenario 3: 90%
+Escenario 4: 60%
+- Jugar balones largos:
+
+Escenario 1: 60%
+Escenario 2: 70%
+Escenario 3: 70%
+Escenario 4: 80%
+
+Pregunta:
+Si no se puede prever con certeza cuál será el escenario en los últimos 10 minutos y todos los escenarios son igualmente probables, ¿qué estrategia debería usar el entrenador para maximizar las probabilidades de éxito?
+
+```{r}
+estrategia_bandas <- c(85, 40, 80, 50)  # Atacar por las bandas
+estrategia_centro <- c(50, 30, 90, 60)  # Atacar por el centro
+estrategia_largos <- c(60, 70, 70, 80)  # Jugar balones largos
+
+matriz_probabilidades <- matrix(c(estrategia_bandas, estrategia_centro, estrategia_largos), 
+                                nrow = 3, 
+                                byrow = TRUE)
+
+rownames(matriz_probabilidades) <- c("Atacar por las bandas", "Atacar por el centro", "Jugar balones largos")
+colnames(matriz_probabilidades) <- c("Escenario 1: Jugador menos", 
+                                     "Escenario 2: Defensivo", 
+                                     "Escenario 3: Atacando", 
+                                     "Escenario 4: Presión alta")
+
+
+kable(matriz_probabilidades)
+```
+
+```{r}
+tabla1_criterios=criterio.Todos(matriz_probabilidades)
+kable(tabla1_criterios)
+```
+
+La opción elegida en un mayor número de criterios es el de jugar balones largos.
